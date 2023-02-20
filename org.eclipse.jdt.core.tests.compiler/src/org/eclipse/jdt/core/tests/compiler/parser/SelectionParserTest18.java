@@ -20,7 +20,6 @@ import junit.framework.Test;
 public class SelectionParserTest18 extends AbstractSelectionTest {
 static {
 //		TESTS_NUMBERS = new int[] { 53 };
-		TESTS_NAMES = new String[] { "testBug486264_selectionOnLambda_expectLambdaMethod" };
 }
 public static Test suite() {
 	return buildMinimalComplianceTestSuite(SelectionParserTest18.class, F_1_8);
