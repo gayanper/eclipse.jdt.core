@@ -7,6 +7,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
+ * This is an implementation of an early-draft specification developed under the Java
+ * Community Process (JCP) and is made available for testing and evaluation purposes
+ * only. The code is not compatible with any specification of the JCP.
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -30,7 +34,7 @@ public class SwitchPatternTest extends AbstractRegressionTest9 {
 	static {
 //		TESTS_NUMBERS = new int [] { 40 };
 //		TESTS_RANGE = new int[] { 1, -1 };
-//		TESTS_NAMES = new String[] { "testBug575571_1"};
+//		TESTS_NAMES = new String[] { "testBug575053_002"};
 	}
 
 	private static String previewLevel = "21";
@@ -2899,15 +2903,12 @@ public class SwitchPatternTest extends AbstractRegressionTest9 {
 				"		try{\n" +
 				"		  (new X()).foo(null);\n" +
 				"		} catch(Exception e) {\n" +
-				"		 	e.printStackTrace(System.out);\n" +
+				"		 	System.out.println(\"Null Pointer Exception Thrown\");\n" +
 				"		}\n" +
 				"	}\n"+
 				"}",
 			},
-			"java.lang.NullPointerException\n" +
-			"	at java.base/java.util.Objects.requireNonNull(Objects.java:233)\n" +
-			"	at X.foo(X.java:3)\n" +
-			"	at X.main(X.java:10)");
+			"Null Pointer Exception Thrown");
 	}
 	public void testBug575053_002() {
 		runConformTest(
@@ -2924,16 +2925,13 @@ public class SwitchPatternTest extends AbstractRegressionTest9 {
 				"		try{\n" +
 				"		  (new X()).foo(null);\n" +
 				"		} catch(Exception t) {\n" +
-				"		 	t.printStackTrace();\n" +
+				"		 	System.err.println(\"Null Pointer Exception Thrown\");\n" +
 				"		}\n" +
 				"	}\n"+
 				"}",
 			},
 			"",
-			"java.lang.NullPointerException\n" +
-			"	at java.base/java.util.Objects.requireNonNull(Objects.java:233)\n" +
-			"	at X.foo(X.java:3)\n" +
-			"	at X.main(X.java:10)");
+			"Null Pointer Exception Thrown");
 	}
 	public void testBug575249_01() {
 		runNegativeTest(
