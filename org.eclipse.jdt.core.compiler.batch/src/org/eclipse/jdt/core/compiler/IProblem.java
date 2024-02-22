@@ -2581,10 +2581,9 @@ void setSourceStart(int sourceStart);
 	int IllegalRecordPattern = TypeRelated + 1941;
 
 	/**
-	 * @since 3.38
+	 * @since 3.37
 	 */
-	int NamedPatternVariablesDisallowedHere = Internal + 1942;
-
+	int ImplicitClassMissingMainMethod = PreviewRelated + 1950;
 
 	/**
 	 * @since 3.35
