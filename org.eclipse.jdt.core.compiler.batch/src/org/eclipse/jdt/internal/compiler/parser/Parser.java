@@ -4826,11 +4826,11 @@ protected void consumeInternalCompilationUnit() {
 		this.compilationUnit.createPackageInfoType();
 	}
 }
-protected void consumeUnnamedClassBodyDeclarations() {
+protected void consumeImplicitlyDeclaredClassBodyDeclarations() {
 	concatNodeLists();
 }
 
-protected void consumeInternalCompilationUnitWithPotentialUnnamedClass() {
+protected void consumeInternalCompilationUnitWithPotentialImplicitlyDeclaredClass() {
 	int length;
 	if ((length = this.astLengthStack[this.astLengthPtr--]) != 0) {
 		LinkedList<AbstractMethodDeclaration> methods = new LinkedList<>();
@@ -6853,11 +6853,11 @@ protected void consumeRule(int act) {
     case 105 : if (DEBUG) { System.out.println("ModuleDeclaration ::= ModuleHeader ModuleBody"); }  //$NON-NLS-1$
 		    consumeModuleDeclaration(); 			break;
 
-    case 106 : if (DEBUG) { System.out.println("InternalCompilationUnit ::= UnnamedClassBodyDeclarations"); }  //$NON-NLS-1$
-		    consumeInternalCompilationUnitWithPotentialUnnamedClass(); 			break;
+    case 106 : if (DEBUG) { System.out.println("InternalCompilationUnit ::=..."); }  //$NON-NLS-1$
+		    consumeInternalCompilationUnitWithPotentialImplicitlyDeclaredClass(); 			break;
 
     case 107 : if (DEBUG) { System.out.println("InternalCompilationUnit ::= ImportDeclarations..."); }  //$NON-NLS-1$
-		    consumeInternalCompilationUnitWithPotentialUnnamedClass(); 			break;
+		    consumeInternalCompilationUnitWithPotentialImplicitlyDeclaredClass(); 			break;
 
     case 108 : if (DEBUG) { System.out.println("ModuleHeader ::= Modifiersopt ModuleModifieropt module"); }  //$NON-NLS-1$
 		    consumeModuleHeader(); 			break;
@@ -7006,8 +7006,8 @@ protected void consumeRule(int act) {
     case 223 : if (DEBUG) { System.out.println("ClassBodyDeclarations ::= ClassBodyDeclarations..."); }  //$NON-NLS-1$
 		    consumeClassBodyDeclarations(); 			break;
 
-    case 228 : if (DEBUG) { System.out.println("UnnamedClassBodyDeclarations ::= ClassMemberDeclaration"); }  //$NON-NLS-1$
-		    consumeUnnamedClassBodyDeclarations(); 			break;
+    case 228 : if (DEBUG) { System.out.println("ImplicitlyDeclaredClassBodyDeclarations ::=..."); }  //$NON-NLS-1$
+		    consumeImplicitlyDeclaredClassBodyDeclarations(); 			break;
 
     case 229 : if (DEBUG) { System.out.println("ClassBodyDeclaration ::= Diet NestedMethod..."); }  //$NON-NLS-1$
 		    consumeClassBodyDeclaration(); 			break;
@@ -7282,17 +7282,11 @@ protected void consumeRule(int act) {
     case 357 : if (DEBUG) { System.out.println("InstanceofExpression ::= InstanceofExpression..."); }  //$NON-NLS-1$
 		    consumeInstanceOfExpression(); 			break;
 
-    case 359 : if (DEBUG) { System.out.println("InstanceofRHS -> InstanceofPattern"); }  //$NON-NLS-1$
-		    consumeInstanceOfRHS(); 			break;
-
     case 360 : if (DEBUG) { System.out.println("InstanceofClassic ::= instanceof Modifiersopt Type"); }  //$NON-NLS-1$
 		    consumeInstanceOfClassic(); 			break;
 
     case 361 : if (DEBUG) { System.out.println("InstanceofPattern ::= instanceof Pattern"); }  //$NON-NLS-1$
 		    consumeInstanceofPattern(); 			break;
-
-    case 363 : if (DEBUG) { System.out.println("Pattern -> RecordPattern"); }  //$NON-NLS-1$
-		    consumePattern(); 			break;
 
     case 364 : if (DEBUG) { System.out.println("TypePattern ::= Modifiersopt Type Identifier"); }  //$NON-NLS-1$
 		    consumeTypePattern(); 			break;
@@ -7470,9 +7464,6 @@ protected void consumeRule(int act) {
 
     case 485 : if (DEBUG) { System.out.println("CaseLabelElement ::= CaseLabelElementPattern Guard"); }  //$NON-NLS-1$
 		    consumeCaseLabelElement(CaseLabelKind.CASE_PATTERN); 			break;
-
-    case 486 : if (DEBUG) { System.out.println("CaseLabelElementPattern ::= BeginCaseElement Pattern"); }  //$NON-NLS-1$
-		    consumeCaseLabelElementPattern(); 			break;
 
     case 487 : if (DEBUG) { System.out.println("Guard ::= RestrictedIdentifierWhen Expression"); }  //$NON-NLS-1$
 		    consumeGuard(); 			break;

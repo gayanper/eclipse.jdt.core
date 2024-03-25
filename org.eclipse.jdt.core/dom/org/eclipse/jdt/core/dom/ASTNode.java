@@ -1100,8 +1100,16 @@ public abstract class ASTNode {
 	public static final int STRING_TEMPLATE_COMPONENT = 117;
 
 	/**
-	 * @see UnnamedClass
-	 * @since 3.37
+	 * Node type constant indicating a node of type
+	 * <code>EitherOrMultiPattern</code>.
+	 * @since 3.38
+	 * @noreference This field is not intended to be referenced by clients.
+	 */
+	public static final int EitherOr_MultiPattern = 118;
+
+	/**
+	 * @see ImplicitTypeDeclaration
+	 * @since 3.38
 	 * @noreference This field is not intended to be referenced by clients.
 	 */
 	public static final int UNNAMED_CLASS = 118;
@@ -1353,7 +1361,7 @@ public abstract class ASTNode {
 			case STRING_TEMPLATE_COMPONENT :
 				return StringTemplateComponent.class;
 			case UNNAMED_CLASS :
-				return UnnamedClass.class;
+				return ImplicitTypeDeclaration.class;
 		}
 		throw new IllegalArgumentException();
 	}
