@@ -21,9 +21,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.compiler.CharOperation;
@@ -305,9 +304,11 @@ public class SourceIndexer extends AbstractIndexer implements ITypeRequestor, Su
 			try {
 				if (JavaProject.hasJavaNature(file.getProject())) {
 					IJavaProject javaProject = JavaCore.create(file.getProject());
-					IClasspathEntry cpEntry = javaProject.findContainingClasspathEntry(file);
-					IJavaElement element = javaProject.findElement(file.getFullPath().makeRelativeTo(cpEntry.getPath()));
-					if (element instanceof org.eclipse.jdt.internal.core.CompilationUnit modelUnit) {
+					// Do NOT call javaProject.getElement(pathToJavaFile) as it can loop inside index
+					// when there are multiple package root/source folders, and then cause deadlock
+					// so we go finer grain by picking the right fragment first (so index call shouldn't happen)
+					IPackageFragment fragment = javaProject.findPackageFragment(file.getFullPath().removeLastSegments(1));
+					if (fragment.getCompilationUnit(file.getName()) instanceof org.eclipse.jdt.internal.core.CompilationUnit modelUnit) {
 						// TODO check element info: if has AST and flags are set sufficiently, just reuse instead of rebuilding
 						ASTParser astParser = ASTParser.newParser(modelUnit.getElementInfo() instanceof ASTHolderCUInfo astHolder ? astHolder.astLevel : AST.getJLSLatest());
 						astParser.setSource(modelUnit);
