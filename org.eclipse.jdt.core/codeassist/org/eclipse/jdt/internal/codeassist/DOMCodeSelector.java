@@ -65,6 +65,7 @@ import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import org.eclipse.jdt.core.dom.TagElement;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeMethodReference;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
@@ -467,6 +468,9 @@ public class DOMCodeSelector {
 			}
 			if (node.getParent() instanceof ExpressionMethodReference exprMethodReference && exprMethodReference.getName() == node) {
 				return resolveBinding(exprMethodReference);
+			}
+			if (node.getParent() instanceof TypeMethodReference typeMethodReference && typeMethodReference.getName() == node) {
+				return resolveBinding(typeMethodReference);
 			}
 			IBinding res = aName.resolveBinding();
 			if (res != null) {
