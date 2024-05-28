@@ -274,7 +274,7 @@ public class DOMToModelPopulator extends ASTVisitor {
 					.orElse(currentEnd);
 				changed = (currentEnd != newEnd);
 				nameSourceEnd = newEnd;
-			} while (changed);
+			} while (nameSourceEnd > 0 && changed);
 		}
 		newInfo.setNameSourceEnd(nameSourceEnd);
 		newInfo.setFlags(node.isStatic() ? Flags.AccStatic : 0);
