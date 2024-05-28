@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @since 3.37
+ * @since 3.38
+ * @noreference
  */
 public class ImplicitTypeDeclaration extends AbstractTypeDeclaration {
 
