@@ -142,7 +142,8 @@ public interface ClassFileConstants {
 	int MAJOR_VERSION_23 = 67;
 
 	int MAJOR_VERSION_0 = 44;
-	int MAJOR_LATEST_VERSION = MAJOR_VERSION_23;
+	// Latest version supported by ECJ (not necessarily latest known Java version)
+	int MAJOR_LATEST_VERSION = MAJOR_VERSION_22;
 
 	int MINOR_VERSION_0 = 0;
 	int MINOR_VERSION_1 = 1;
@@ -177,6 +178,10 @@ public interface ClassFileConstants {
 	long JDK22 = ((long)ClassFileConstants.MAJOR_VERSION_22 << 16) + ClassFileConstants.MINOR_VERSION_0;
 	long JDK23 = ((long)ClassFileConstants.MAJOR_VERSION_23 << 16) + ClassFileConstants.MINOR_VERSION_0;
 
+	/**
+	 *
+	 * @return The latest JDK level supported by ECJ (can be different from the latest known JDK level)
+	 */
 	public static long getLatestJDKLevel() {
 		return ((long)ClassFileConstants.MAJOR_LATEST_VERSION << 16) + ClassFileConstants.MINOR_VERSION_0;
 	}

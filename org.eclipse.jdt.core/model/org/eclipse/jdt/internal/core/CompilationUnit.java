@@ -540,7 +540,9 @@ public org.eclipse.jdt.core.dom.CompilationUnit getOrBuildAST(WorkingCopyOwner w
 	if (this.ast != null && storeAST) {
 		return this.ast;
 	}
-	ASTParser parser = ASTParser.newParser(AST.getJLSLatest()); // TODO use Java project info
+	Map<String, String> options = getOptions(true);
+	int jlsLevel = Integer.parseInt(options.getOrDefault(JavaCore.COMPILER_SOURCE, Integer.toString(AST.getJLSLatest())));
+	ASTParser parser = ASTParser.newParser(jlsLevel);
 	parser.setWorkingCopyOwner(workingCopyOwner);
 	parser.setSource(this);
 	// greedily enable everything assuming the AST will be used extensively for edition
