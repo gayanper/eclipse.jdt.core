@@ -2706,7 +2706,7 @@ protected void consumeClassHeaderName1() {
 	consumeClassOrRecordHeaderName1(false);
 }
 protected void consumeClassHeaderPermittedSubclasses() {
-populatePermittedTypes();
+	populatePermittedTypes();
 }
 protected void consumeClassInstanceCreationExpression() {
 	// ClassInstanceCreationExpression ::= 'new' ClassType '(' ArgumentListopt ')' ClassBodyopt
@@ -4785,10 +4785,8 @@ private void populatePermittedTypes() {
 		typeDecl.permittedTypes = new TypeReference[length],
 		0,
 		length);
-	TypeReference[] permittedTypes = typeDecl.permittedTypes;
-	for (TypeReference typeReference : permittedTypes) {
-		typeDecl.bits |= (typeReference.bits & ASTNode.HasTypeAnnotations); // TODO: Confirm with spec
-//		typeReference.bits |= ASTNode.IsSuperType; // TODO: Check equivalent required
+	for (TypeReference typeReference : typeDecl.permittedTypes) {
+		rejectIllegalTypeAnnotations(typeReference);
 	}
 	typeDecl.bodyStart = typeDecl.permittedTypes[length-1].sourceEnd + 1;
 	this.listLength = 0; // reset after having read super-interfaces
@@ -6484,9 +6482,9 @@ private void rejectIllegalTypeAnnotations(TypeReference typeReference) {
 				problemReporter().misplacedTypeAnnotations(misplacedAnnotations[0], misplacedAnnotations[misplacedAnnotations.length - 1]);
 		}
 	}
-typeReference.annotations = null;
-typeReference.setAnnotationsOnDimensions(null);
-typeReference.bits &= ~ASTNode.HasTypeAnnotations;
+	typeReference.annotations = null;
+	typeReference.setAnnotationsOnDimensions(null);
+	typeReference.bits &= ~ASTNode.HasTypeAnnotations;
 }
 protected void consumeQualifiedSuperReceiver() {
 	// QualifiedSuperReceiver ::= Name '.' 'super'
