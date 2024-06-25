@@ -38,9 +38,14 @@ import org.eclipse.jdt.core.ICompilationUnit;
 public abstract class ASTRequestor {
 
 	/**
+<<<<<<< HEAD
 	 * The function used to resolve additional bindings,
 	 * or <code>null</code> if none.
 	 * The function accepts the binding key and returns the corresponding <code>IBinding</code>.
+=======
+	 * The function used to resolve additional bindings by binding key,
+	 * or <code>null</code> if none.
+>>>>>>> 5e787330f9 ([WIP] switch over to use a Function instead of a bespoke interface)
 	 * Note that this field is non-null
 	 * only within the dynamic scope of a call to
 	 * <code>ASTParser.createASTs</code>.
