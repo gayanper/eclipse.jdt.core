@@ -388,6 +388,24 @@ class JavacConverter {
 		}
 	}
 
+	private void nameSettings(SimpleName name, JCMethodDecl javac) {
+		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
+		if (javac.getReturnType() != null) {
+			start = javac.getReturnType().getEndPosition(this.javacCompilationUnit.endPositions);
+		}
+		var length = javac.getName().length();
+		name.setSourceRange(start, length);
+	}
+
+	private void nameSettings(SimpleName name, JCVariableDecl javac) {
+		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
+		if (javac.getType() != null) {
+			start = javac.getType().getEndPosition(this.javacCompilationUnit.endPositions);
+		}
+		var length = javac.getName().length();
+		name.setSourceRange(start, length);
+	}
+
 	private Name toName(JCTree expression) {
 		return toName(expression, this::commonSettings);
 	}
@@ -783,11 +801,15 @@ class JavacConverter {
 		JCTree retTypeTree = javac.getReturnType();
 		Type retType = null;
 		if( !javacNameMatchesError) {
-			res.setName(this.ast.newSimpleName(methodDeclName));
+			var name = this.ast.newSimpleName(methodDeclName);
+			nameSettings(name, javac);
+			res.setName(name);
 		} else {
 			// javac name is an error, so let's treat the return type as the name
 			if( retTypeTree instanceof JCIdent jcid) {
-				res.setName(this.ast.newSimpleName(jcid.getName().toString()));
+				var name = this.ast.newSimpleName(jcid.getName().toString());
+				nameSettings(name, javac);
+				res.setName(name);
 				retTypeTree = null;
 				if( jcid.toString().equals(getNodeName(parent))) {
 					res.setConstructor(true);
@@ -918,19 +940,20 @@ class JavacConverter {
 		SingleVariableDeclaration res = this.ast.newSingleVariableDeclaration();
 		commonSettings(res, javac);
 		if (convertName(javac.getName()) instanceof SimpleName simpleName) {
-			int endPos = javac.getEndPosition(this.javacCompilationUnit.endPositions);
-			if( !simpleName.toString().equals(FAKE_IDENTIFIER)) {
-				char theChar = this.rawText.charAt(endPos);
-				char soughtLastChar = simpleName.toString().charAt(simpleName.toString().length() - 1);
-				while (endPos > res.getStartPosition() && theChar != soughtLastChar) {
-					theChar = this.rawText.charAt(--endPos);
-				}
-				endPos++;
-				int length = simpleName.toString().length();
-				if( endPos != -1 && endPos - length > 0) {
-					simpleName.setSourceRange(endPos - length, length);
-				}
-			}
+			// int endPos = javac.getEndPosition(this.javacCompilationUnit.endPositions);
+			// if( !simpleName.toString().equals(FAKE_IDENTIFIER)) {
+			// 	char theChar = this.rawText.charAt(endPos);
+			// 	char soughtLastChar = simpleName.toString().charAt(simpleName.toString().length() - 1);
+			// 	while (endPos > res.getStartPosition() && theChar != soughtLastChar) {
+			// 		theChar = this.rawText.charAt(--endPos);
+			// 	}
+			// 	endPos++;
+			// 	int length = simpleName.toString().length();
+			// 	if( endPos != -1 && endPos - length > 0) {
+			// 		simpleName.setSourceRange(endPos - length, length);
+			// 	}
+			// }
+			nameSettings(simpleName, javac);
 			res.setName(simpleName);
 		}
 		if( this.ast.apiLevel != AST.JLS2_INTERNAL) {
