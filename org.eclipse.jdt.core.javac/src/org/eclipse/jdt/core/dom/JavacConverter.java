@@ -388,21 +388,21 @@ class JavacConverter {
 		}
 	}
 
-	private void nameSettings(SimpleName name, JCMethodDecl javac) {
+	private void nameSettings(SimpleName name, JCMethodDecl javac, String selector) {
 		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
 		if (javac.getReturnType() != null) {
 			start = javac.getReturnType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = name.getLength(); // use SimpleName since it can change due to erroneous scenarios
+		var length = (selector.equals(ERROR) || selector.equals(FAKE_IDENTIFIER)) ? 0 : selector.length();
 		name.setSourceRange(start, length);
 	}
 
-	private void nameSettings(SimpleName name, JCVariableDecl javac) {
+	private void nameSettings(SimpleName name, JCVariableDecl javac, String varName) {
 		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
 		if (javac.getType() != null) {
 			start = javac.getType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = name.getLength(); // use SimpleName since it can change due to erroneous scenarios
+		var length = (varName.equals(ERROR) || varName.equals(FAKE_IDENTIFIER)) ? 0 : varName.length();
 		name.setSourceRange(start, length);
 	}
 
@@ -802,13 +802,13 @@ class JavacConverter {
 		Type retType = null;
 		if( !javacNameMatchesError) {
 			var name = this.ast.newSimpleName(methodDeclName);
-			nameSettings(name, javac);
+			nameSettings(name, javac, javacName);
 			res.setName(name);
 		} else {
 			// javac name is an error, so let's treat the return type as the name
 			if( retTypeTree instanceof JCIdent jcid) {
 				var name = this.ast.newSimpleName(jcid.getName().toString());
-				nameSettings(name, javac);
+				nameSettings(name, javac, javacName);
 				res.setName(name);
 				retTypeTree = null;
 				if( jcid.toString().equals(getNodeName(parent))) {
@@ -953,7 +953,7 @@ class JavacConverter {
 			// 		simpleName.setSourceRange(endPos - length, length);
 			// 	}
 			// }
-			nameSettings(simpleName, javac);
+			nameSettings(simpleName, javac, simpleName.toString());
 			res.setName(simpleName);
 		}
 		if( this.ast.apiLevel != AST.JLS2_INTERNAL) {
