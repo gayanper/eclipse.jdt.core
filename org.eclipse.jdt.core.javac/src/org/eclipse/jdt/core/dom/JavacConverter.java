@@ -393,7 +393,7 @@ class JavacConverter {
 		if (javac.getReturnType() != null) {
 			start = javac.getReturnType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = javac.getName().length();
+		var length = name.getLength(); // use SimpleName since it can change due to erroneous scenarios
 		name.setSourceRange(start, length);
 	}
 
@@ -402,7 +402,7 @@ class JavacConverter {
 		if (javac.getType() != null) {
 			start = javac.getType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = javac.getName().length();
+		var length = name.getLength(); // use SimpleName since it can change due to erroneous scenarios
 		name.setSourceRange(start, length);
 	}
 
