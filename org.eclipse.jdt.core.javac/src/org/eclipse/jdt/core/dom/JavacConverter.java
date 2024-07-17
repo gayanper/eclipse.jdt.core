@@ -389,21 +389,23 @@ class JavacConverter {
 	}
 
 	private void nameSettings(SimpleName name, JCMethodDecl javac, String selector) {
+		if ((selector.equals(ERROR) || selector.equals(FAKE_IDENTIFIER)))
+			return;
 		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
 		if (javac.getReturnType() != null) {
 			start = javac.getReturnType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = (selector.equals(ERROR) || selector.equals(FAKE_IDENTIFIER)) ? 0 : selector.length();
-		name.setSourceRange(start, length);
+		name.setSourceRange(start, selector.length());
 	}
 
 	private void nameSettings(SimpleName name, JCVariableDecl javac, String varName) {
+		if (varName.equals(ERROR) || varName.equals(FAKE_IDENTIFIER))
+			return;
 		var start = javac.getModifiers().getEndPosition(this.javacCompilationUnit.endPositions);
 		if (javac.getType() != null) {
 			start = javac.getType().getEndPosition(this.javacCompilationUnit.endPositions);
 		}
-		var length = (varName.equals(ERROR) || varName.equals(FAKE_IDENTIFIER)) ? 0 : varName.length();
-		name.setSourceRange(start, length);
+		name.setSourceRange(start, varName.length());
 	}
 
 	private Name toName(JCTree expression) {
